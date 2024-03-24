@@ -59,7 +59,7 @@ const parserWorker =  async () => {
     await parser.newPage();
 
     await parser.goto();
-  }, 60 * 10);
+  }, 1000 * 60 * 5);
 };
 
 export default async (req, res) => {
