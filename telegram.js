@@ -1,5 +1,4 @@
 import axios from "axios";
-import fs from "node:fs/promises";
 
 const sendToTelegram = ({ link_original: url, title }) => {
   axios.post(process.env.TELEGRAM, {
