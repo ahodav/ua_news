@@ -16,19 +16,19 @@ const sendToTelegram = ({ link_original: url, title }) => {
 };
 
 export default async (data) => {
-  const prevNewsIds = await readFile("newsIds.json").then((res) =>
+  const prevNewsIds = await readFile("./newsIds.json").then((res) =>
     JSON.parse(res.toString())
   );
 
   const postToSend = data.filter(({ id }) => !prevNewsIds.includes(id));
-  
+
   postToSend.forEach((post) => {
     setTimeout(() => {
       sendToTelegram(post);
-    }, Math.random() * 1000);
+    }, Math.random() * 60000);
   });
 
   const idsToSave = data.map(({ id }) => id);
 
-  writeFile("newsIds.json", JSON.stringify(idsToSave, null, 2));
+  writeFile("./newsIds.json", JSON.stringify(idsToSave, null, 2));
 };
