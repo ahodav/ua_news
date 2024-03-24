@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 
 const sendToTelegram = ({ link_original: url, title }) => {
   axios.post(process.env.TELEGRAM, {
-    chat_id: "@science_ua_news",
+    chat_id: process.env.CHAT_ID,
     link_preview_options: {
       prefer_large_media: true,
     },
@@ -17,10 +17,10 @@ let prevNewsIds = [];
 export default async (data) => {
   const postToSend = data.filter(({ id }) => !prevNewsIds.includes(id));
 
-  postToSend.forEach((post) => {
+  postToSend.forEach((post, i) => {
     setTimeout(() => {
       sendToTelegram(post);
-    }, Math.random() * 60000);
+    }, (i + 1) * 60000);
   });
 
   prevNewsIds = data.map(({ id }) => id);
