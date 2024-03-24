@@ -1,5 +1,5 @@
 import axios from "axios";
-import { readFile, writeFile } from "fs/promises";
+import fs from "node:fs/promises";
 
 const sendToTelegram = ({ link_original: url, title }) => {
   axios.post(
@@ -16,7 +16,7 @@ const sendToTelegram = ({ link_original: url, title }) => {
 };
 
 export default async (data) => {
-  const prevNewsIds = await readFile("./newsIds.json").then((res) =>
+  const prevNewsIds = await fs.readFile("./newsIds").then((res) =>
     JSON.parse(res.toString())
   );
 
@@ -30,5 +30,5 @@ export default async (data) => {
 
   const idsToSave = data.map(({ id }) => id);
 
-  writeFile("./newsIds.json", JSON.stringify(idsToSave, null, 2));
+  fs.writeFile("./newsIds", JSON.stringify(idsToSave, null, 2));
 };
