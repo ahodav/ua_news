@@ -52,13 +52,14 @@ class Parser {
 }
 
 const parserWorker =  async () => {
+  console.log('started')
   parserWorkerTimer = setImmediate(async () => {
     const parser = new Parser();
 
     await parser.newPage();
 
     await parser.goto();
-  }, 60 * 30);
+  }, 60 * 10);
 };
 
 export default async (req, res) => {
