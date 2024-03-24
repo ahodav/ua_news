@@ -1,7 +1,6 @@
 import { launchBrowser } from "./helpers.js";
 import telegram from "./telegram.js";
 
-const url = "https://www.ukr.net/news/science.html";
 const browser = await launchBrowser();
 let parserWorkerTimer = undefined;
 
@@ -18,7 +17,7 @@ class Parser {
   }
 
   async goto() {
-    await this.page.goto(url, { timeout: 0, waitUntil: "domcontentloaded" });
+    await this.page.goto(process.env.URL, { timeout: 0, waitUntil: "domcontentloaded" });
   }
 
   subscribe() {
@@ -52,13 +51,13 @@ class Parser {
   }
 }
 
-const parserWorker = () => {
+const parserWorker =  async () => {
   parserWorkerTimer = setImmediate(async () => {
     const parser = new Parser();
 
     await parser.newPage();
 
-    await parser.goto(url);
+    await parser.goto();
   }, 60 * 30);
 };
 

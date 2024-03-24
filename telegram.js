@@ -3,7 +3,7 @@ import { readFile, writeFile } from "fs/promises";
 
 const sendToTelegram = ({ link_original: url, title }) => {
   axios.post(
-    "https://api.telegram.org/bot6426231628:AAEEgra-eH8n-yyhsg0bTWNtsUGBUX0znNo/sendMessage",
+    process.env.TELEGRAM,
     {
       chat_id: "@science_ua_news",
       link_preview_options: {
@@ -21,7 +21,7 @@ export default async (data) => {
   );
 
   const postToSend = data.filter(({ id }) => !prevNewsIds.includes(id));
-
+  
   postToSend.forEach((post) => {
     setTimeout(() => {
       sendToTelegram(post);
