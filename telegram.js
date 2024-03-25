@@ -12,9 +12,10 @@ const sendToTelegram = ({ link_original: url, title }) => {
 };
 
 let prevNewsIds = [];
+let prevNewsTitles = [];
 
 export default async (data) => {
-  const postToSend = data.filter(({ id }) => !prevNewsIds.includes(id));
+  const postToSend = data.filter(({ id, title }) => !prevNewsIds.includes(id) && !prevNewsTitles.includes(title));
 
   postToSend.forEach((post, i) => {
     setTimeout(() => {
@@ -23,4 +24,5 @@ export default async (data) => {
   });
 
   prevNewsIds = data.map(({ id }) => id);
+  prevNewsIds = data.map(({ title }) => title);
 };
