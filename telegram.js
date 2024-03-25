@@ -15,14 +15,24 @@ let prevNewsIds = [];
 let prevNewsTitles = [];
 
 export default async (data) => {
-  const postToSend = data.filter(({ id, title }) => !prevNewsIds.includes(id) && !prevNewsTitles.includes(title));
+  const postToSend = data.filter(
+    ({ id, title }) =>
+      !prevNewsIds.includes(id) && !prevNewsTitles.includes(title)
+  );
+  const uniquePosts = postToSend.reduce((acc, curr) => {
+    if (acc.find(({ title }) => title === curr.title)) return acc;
+    
+    acc.push(curr)
+    
+    return acc;
+  }, []);
 
-  postToSend.forEach((post, i) => {
+  uniquePosts.forEach((post, i) => {
     setTimeout(() => {
       sendToTelegram(post);
     }, (i + 1) * 60000);
   });
 
-  prevNewsIds = data.map(({ id }) => id);
-  prevNewsTitles = data.map(({ title }) => title);
+  prevNewsIds = uniquePosts.map(({ id }) => id);
+  prevNewsTitles = uniquePosts.map(({ title }) => title);
 };
