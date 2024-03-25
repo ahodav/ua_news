@@ -24,5 +24,5 @@ export default async (data) => {
   });
 
   prevNewsIds = data.map(({ id }) => id);
-  prevNewsIds = data.map(({ title }) => title);
+  prevNewsTitles = data.map(({ title }) => title);
 };
