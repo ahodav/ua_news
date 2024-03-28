@@ -17,7 +17,10 @@ class Parser {
   }
 
   async goto() {
-    await this.page.goto(process.env.URL, { timeout: 0, waitUntil: "domcontentloaded" });
+    await this.page.goto(process.env.URL, {
+      timeout: 0,
+      waitUntil: "domcontentloaded",
+    });
   }
 
   subscribe() {
@@ -33,10 +36,14 @@ class Parser {
   }
 
   onResponse({ data }) {
-    return data.reduce((acc, { source } = {}) => {
-      if (!source) return acc;
+    return data.reduce((acc, { source = [] } = {}) => {
+      if (!source.length) return acc;
 
-      return acc.concat(source.map(({ article }) => article));
+      const [{ article } = {}] = source;
+
+      if (!article) return acc;
+
+      return acc.concat(article);
     }, []);
   }
 
@@ -51,8 +58,8 @@ class Parser {
   }
 }
 
-const parserWorker =  async () => {
-  console.log('started')
+const parserWorker = async () => {
+  console.log("started");
   parserWorkerTimer = setImmediate(async () => {
     const parser = new Parser();
 
@@ -63,7 +70,7 @@ const parserWorker =  async () => {
 };
 
 export default async (req, res) => {
-  clearImmediate(parserWorkerTimer)
+  clearImmediate(parserWorkerTimer);
 
   parserWorker();
 
